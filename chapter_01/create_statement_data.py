@@ -38,7 +38,12 @@ def create_statement_data(invoice: dict, plays: dict) -> dict:
 
 
 def create_performance_calculator(a_performance, a_play):
-    return PerformanceCalculator(a_performance, a_play)
+    if a_play['type'] == 'tragedy':
+        return TragedyCalculator(a_performance, a_play)
+    elif a_play['type'] == 'comedy':
+        return ComedyCalculator(a_performance, a_play)
+    else:
+        raise ValueError(f'unknown type: {a_play["type"]}')
 
 
 class PerformanceCalculator:
@@ -49,26 +54,33 @@ class PerformanceCalculator:
 
     @property
     def amount(self):
-        result = 0
-        if self.play['type'] == 'tragedy':
-            result = 40000
-            if self.performance['audience'] > 30:
-                result += 1000 * (self.performance['audience'] - 30)
+        raise AttributeError(f'subclass responsibility')
 
-        elif self.play['type'] == 'comedy':
-            result = 30000
-            if self.performance['audience'] > 20:
-                result += 10000 + 500 * (self.performance['audience'] - 20)
-            result += 300 * self.performance['audience']
+    @property
+    def volume_credits(self):
+        return max(self.performance['audience'] - 30, 0)
 
-        else:
-            raise ValueError(f'unknown type: {self.play["type"]}')
+
+class TragedyCalculator(PerformanceCalculator):
+
+    @property
+    def amount(self):
+        result = 40000
+        if self.performance['audience'] > 30:
+            result += 1000 * (self.performance['audience'] - 30)
+        return result
+
+
+class ComedyCalculator(PerformanceCalculator):
+
+    @property
+    def amount(self):
+        result = 30000
+        if self.performance['audience'] > 20:
+            result += 10000 + 500 * (self.performance['audience'] - 20)
+        result += 300 * self.performance['audience']
         return result
 
     @property
     def volume_credits(self):
-        result = 0
-        result += max(self.performance['audience'] - 30, 0)
-        if self.play['type'] == 'comedy':
-            result += self.performance['audience'] // 5
-        return result
+        return super().volume_credits + self.performance['audience'] // 5
