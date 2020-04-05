@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 #
-# Copyright: yiguotech.com
-# Author: chenjiaxin
+#
+# Author: noodles
 # Date: 2020-04-04
 
 

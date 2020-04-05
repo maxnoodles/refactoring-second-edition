@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 #
-# Copyright: yiguotech.com
-# Author: chenjiaxin
+#
+# Author: noodles
 # Date: 2020-04-04
 from chapter_01.create_statement_data import create_statement_data
 
