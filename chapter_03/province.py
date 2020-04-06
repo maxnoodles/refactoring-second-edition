@@ -3,7 +3,7 @@
 #
 # Author: noodles
 # Date: 2020-04-05
-from chatper_03.producer import Producer
+from chapter_03.producer import Producer
 
 
 class Province:
@@ -43,7 +43,11 @@ class Province:
 
     @demand.setter
     def demand(self, arg):
-        self._demand = int(arg)
+        try:
+            self._demand = int(arg)
+        except ValueError as e:
+            print(e)
+            self._demand = 0
 
     @property
     def price(self):
@@ -51,7 +55,11 @@ class Province:
 
     @price.setter
     def price(self, arg):
-        self._price = int(arg)
+        try:
+            self._price = int(arg)
+        except ValueError as e:
+            print(e)
+            self._price = 0
 
     @property
     def shortfall(self):
@@ -71,7 +79,8 @@ class Province:
 
         remaining_demand = self.demand
         result = 0
-        map(calculation_cost, sorted(self.produces, key=lambda x: x.cost))
+        for producer in sorted(self.produces, key=lambda x: x.cost):
+            calculation_cost(producer)
         return result
 
     @property
