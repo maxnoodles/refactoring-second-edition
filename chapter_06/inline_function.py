@@ -34,4 +34,3 @@ def more_than_five_late_deliveries(driver):
     return driver.number_of_late_deliveries > 5
 
 
-
